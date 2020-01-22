@@ -1,0 +1,100 @@
+<!-- Learn about this code on MDN: https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Basic_animations -->
+
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta charset="utf-8">
+            <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+            <title>Orbit</title>
+    </head>
+  <body>    
+
+    <canvas id="canvas" width="300" height="300"></canvas>
+
+        <script>
+
+            var sun = new Image();
+            var moon = new Image();
+            var earth = new Image();
+            var ship = new Image();
+            var ufo = new Image();
+            
+            function init() {
+                sun.src = 'sun.png';
+                moon.src = 'https://mdn.mozillademos.org/files/1443/Canvas_moon.png';
+                earth.src = 'https://mdn.mozillademos.org/files/1429/Canvas_earth.png';
+                ship.src = 'ship.png';
+                ufo.src = 'ufo2.png';
+                window.requestAnimationFrame(draw);
+            }
+
+            function draw() {
+                var ctx = document.getElementById('canvas').getContext('2d');
+
+                ctx.globalCompositeOperation = 'destination-over';
+                ctx.clearRect(0, 0, canvas.width, canvas.height); // clear canvas
+
+                //Earth's orbit sort of 
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.4)'; //?
+                ctx.strokeStyle = 'rgba(0, 153, 255, 0.4)'; //color of orbit path
+                ctx.save();
+                ctx.translate(150, 150); //centers the earth's orbit
+
+                // Earth
+                var time = new Date();
+                ctx.rotate(((6 * Math.PI) / 60) * time.getSeconds() + ((6 * Math.PI) / 60000) * time.getMilliseconds());
+                ctx.translate(105, 0);
+                //ctx.fillRect(0, -12, 150, 24); // Shadow
+                ctx.drawImage(earth, -12, -12);
+
+                // Moon
+                ctx.save();
+                ctx.rotate(((2 * Math.PI) / 6) * time.getSeconds() + ((2 * Math.PI) / 6000) * time.getMilliseconds());
+                ctx.translate(0, 28.5);
+                ctx.drawImage(moon, -3.5, -3.5);
+                ctx.restore();
+
+                /*// ship's orbit (hopefully)
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.4)'; //?
+                ctx.strokeStyle = 'rgba(0, 153, 255, 0.4)'; //color of orbit path
+                ctx.save();
+                ctx.translate(150, 150); //centers the earth's orbit*/
+
+                // ship
+                //var time = new Date();
+                ctx.rotate(((6 * Math.PI) / 60) * time.getSeconds() + ((6 * Math.PI) / 60000) * time.getMilliseconds());
+                ctx.translate(160, 0); //radius of orbit
+                ctx.drawImage(ship, -12, -12);
+                ctx.restore();
+                
+                /*// ufo
+                var time = new Date();
+                ctx.rotate(((6 * Math.PI) / 60) * time.getSeconds() + ((6 * Math.PI) / 60000) * time.getMilliseconds());
+                ctx.translate(200, 0); //radius of orbit
+                ctx.drawImage(ufo, -12, -12);
+                ctx.restore(); */
+
+                ctx.beginPath();
+                ctx.arc(150, 150, 60, 0, Math.PI * 2, false); // draws the circle of orbit
+                ctx.stroke();
+
+                ctx.beginPath();
+                ctx.arc(150, 150, 105, 0, Math.PI * 2, false); // draws the circle of Earth's orbit
+                ctx.stroke();
+
+                ctx.beginPath();
+                ctx.arc(150, 150, 160, 0, Math.PI * 2, false); // draws the circle of orbit
+                ctx.stroke();
+                
+                ctx.drawImage(sun, 0, 0, canvas.width, canvas.height);
+
+                window.requestAnimationFrame(draw);
+            }
+            
+            init();
+
+        </script>
+
+</body>
+</html>
